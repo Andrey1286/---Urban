@@ -1,45 +1,29 @@
-
-def calculate_structure_sum(*arg):
-    list_of_numbers = []
-    x = 0
-    for i in arg:
-        if isinstance(i, str):
-            list_of_numbers.append(stroka)
-        elif isinstance(i, list):
-            for j in i:
-                if isinstance(j, int):
-                    list_of_numbers.append(j)
-                elif isinstance(j, str):
-                    list_of_numbers.append(stroka)
-                elif isinstance(i, dict):
-                    number1 = list(zip(i))
-                    for k in number1:
-                        if isinstance(k, str):
-                            list_of_numbers.append(stroka)
-                        elif isinstance(k, int):
-                            list_of_numbers.append(k)
+def calculate_structure_sum(data):
+    total_amount = 0
+    if isinstance(data, int):
+        return data
+    if isinstance(data, str):
+        return len(data)
+    for i in data:
+        if isinstance(i, int):
+            total_amount += i
+        elif isinstance(i, str):
+            total_amount += len(i)
+        elif isinstance(i, list) or isinstance(i, tuple) or isinstance(i, set):
+            total_amount += calculate_structure_sum(i)
         elif isinstance(i, dict):
-            number2 = list(zip(i))
-            for f in number2:
-                if isinstance(f, str):
-                    list_of_numbers.append(stroka)
-                if isinstance(f, int):
-                    list_of_numbers.append(f)
-        if x == 0:
-            print(list_of_numbers)
-            exit()
-        x += 1
-
-    return sum(list_of_numbers)
+            for key, value in i.items():
+                total_amount += calculate_structure_sum(key)
+                total_amount += calculate_structure_sum(value)
+    return total_amount
 
 data_structure = [
-        [1, 2, 3],
-        {'a': 4, 'b': 5},
-        (6, {'cube': 7, 'drum': 8}),
-        "Hello",
-        ((), [{(2, 'Urban', ('Urban2', 35))}])]
-
-stroka = 1
+  [1, 2, 3],
+  {'a': 4, 'b': 5},
+  (6, {'cube': 7, 'drum': 8}),
+  "Hello",
+  ((), [{(2, 'Urban', ('Urban2', 35))}])
+]
 
 result = calculate_structure_sum(data_structure)
 print(result)
