@@ -1,21 +1,19 @@
 class House:
-
-    houses_history = []
+    houses_history = []  # названия созданных объектов
 
     def __new__(cls, *args, **kwargs):
-        obj = object.__new__(cls)
-        cls.houses_history.append(args[0])
-        return obj
+        House.houses_history.append(args[0])
+        return super().__new__(cls)
 
-    def __init__(self, name, number_of_floors):
+    def __init__(self, name, number_of_floors: int):
         self.name = name
         self.number_of_floors = number_of_floors
 
-    def go_to(self, new_floor):
+    def go_to(self, new_floor: int):
         if new_floor > self.number_of_floors or new_floor < 1:
-            print('Такого этажа не существует')
-            return
-        for i in range(1, new_floor + 1):
+            print(f'Такого этажа не существует')
+        else:
+            for i in range(1, new_floor + 1):
                 print(i)
 
     def __len__(self):
@@ -25,47 +23,52 @@ class House:
         return f'Название: {self.name}, кол-во этажей: {self.number_of_floors}'
 
     def __eq__(self, other):
-        if isinstance(other, House):
-            return self.number_of_floors == other.number_of_floors
-        if isinstance(other, int):
-            return self.number_of_floors == other
-        return False
-
+        if isinstance(other, House) and self.number_of_floors == other.number_of_floors:
+            return True
+        elif isinstance(other, int) and self.number_of_floors == other:
+            return True
+        else:
+            return False
 
     def __lt__(self, other):
-        if isinstance(other, House):
-            return self.number_of_floors < other.number_of_floors
-        if isinstance(other, int):
-            return self.number_of_floors < other
-        return False
-
-    def __le__(self, other):
-        if isinstance(other, House):
-            return self.number_of_floors <= other.number_of_floors
-        if isinstance(other, int):
-            return self.number_of_floors <= other
-        return False
+        if isinstance(other, House) and self.number_of_floors < other.number_of_floors:
+            return True
+        elif isinstance(other, int) and self.number_of_floors < other:
+            return True
+        else:
+            return False
 
     def __gt__(self, other):
-        if isinstance(other, House):
-            return self.number_of_floors > other.number_of_floors
-        if isinstance(other, int):
-            return self.number_of_floors > other
-        return False
+        if isinstance(other, House) and self.number_of_floors > other.number_of_floors:
+            return True
+        elif isinstance(other, int) and self.number_of_floors > other:
+            return True
+        else:
+            return False
+
+    def __le__(self, other):
+        if isinstance(other, House) and self.number_of_floors <= other.number_of_floors:
+            return True
+        elif isinstance(other, int) and self.number_of_floors <= other:
+            return True
+        else:
+            return False
 
     def __ge__(self, other):
-        if isinstance(other, House):
-            return self.number_of_floors >= other.number_of_floors
-        if isinstance(other, int):
-            return self.number_of_floors >= other
+        if isinstance(other, House) and self.number_of_floors >= other.number_of_floors:
+            return True
+        elif isinstance(other, int) and self.number_of_floors >= other:
+            return True
+        else:
             return False
 
     def __ne__(self, other):
-        if isinstance(other, House):
-            return self.number_of_floors != other.number_of_floors
-        if isinstance(other, int):
-            return self.number_of_floors != other
-        return False
+        if isinstance(other, House) and self.number_of_floors != other.number_of_floors:
+            return True
+        elif isinstance(other, int) and self.number_of_floors != other:
+            return True
+        else:
+            return False
 
     def __add__(self, value):
         if isinstance(value, int):
@@ -80,6 +83,7 @@ class House:
 
     def __del__(self):
         print(f'{self.name} снесён, но он останется в истории')
+
 
 h1 = House('ЖК Эльбрус', 10)
 print(House.houses_history)
