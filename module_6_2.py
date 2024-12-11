@@ -1,12 +1,10 @@
-class Vehicle: # любой транспорт
-
-    __COLOR_VARIANTS = ['blue', 'red', 'green', 'black', 'white']
-
-    def __init__(self, owner, model, color, engine_power):
-        self.owner = owner # владелец транспорта
-        self.__model = model # модель (марка) транспорта
-        self.__engine_power = engine_power # мощность двигателя
-        self.__color = color # цвет
+class Vehicle:  # любой транспорт
+    __COLOR_VARIANTS = ['blue', 'red', 'green', 'black', 'white']  # список цветов для окрашивания
+    def __init__(self, owner: str, model: str, color: str, engine_power: int):
+        self.owner = owner  # владелец транспорта
+        self.__model = model  # модель автомобиля
+        self.__engine_power = engine_power  # мощность двигателя
+        self.__color = color  # название цвета
 
     def get_model(self):
         return f'Модель: {self.__model}'
@@ -23,25 +21,35 @@ class Vehicle: # любой транспорт
         print(self.get_color())
         print(f'Владелец: {self.owner}')
 
-    def set_color(self, new_color):
-        if new_color.lower() in (color.lower() for color in self.__COLOR_VARIANTS):
-            self.__color = new_color
-        else:
-            print(f'Нельзя сменить цвет на {new_color}')
+    def set_color(self, new_color: str):
+        for i in self.__COLOR_VARIANTS:
+            if new_color.lower() == str(i).lower():
+                self.__color = new_color
+            else:
+                print(f'Нельзя сменить цвет на {new_color}')
 
 
-class Sedan(Vehicle): # седан
-        __PASSENGERS_LIMIT = 5
+class Sedan(Vehicle):  # седан
+    __PASSENGERS_LIMIT = 5  # количество пассажиров
 
-        def __init__(self, owner, model, color, engine_power):
-            super().__init__(owner, model, color, engine_power)
 
+# Текущие цвета __COLOR_VARIANTS = ['blue', 'red', 'green', 'black', 'white']
 
 vehicle1 = Sedan('Fedos', 'Toyota Mark II', 'blue', 500)
+
+
+# Изначальные свойства
+
 vehicle1.print_info()
 
+# Меняем свойства (в т.ч. вызывая методы)
+
 vehicle1.set_color('Pink')
+
 vehicle1.set_color('BLACK')
+
 vehicle1.owner = 'Vasyok'
+
+# Проверяем что поменялось
 
 vehicle1.print_info()
