@@ -12,14 +12,15 @@ class User:
 
 
 class Video:
-    def __init__(self, title: str, duration: int):
+    def __init__(self, title: str, duration: int, adult_mode=False):
         self.title = title           # заголовок, строка
         self.duration = duration     # продолжительность, секунды
         self.time_now = 0            # секунда остановки
-        self.adult_mode = False      # ограничение по возрасту
+        self.adult_mode = adult_mode  # ограничение по возрасту
 
-    def __str__(self):
-        return f'Video: {self.title}, duration: {self.duration}'
+    def __eq__(self, other):
+        if isinstance(other, Video):
+            return self.title == other.title
 
 
 class UrTube:
@@ -37,44 +38,48 @@ class UrTube:
                 print('Неверный логин или пароль')
 
     def register(self, nickname, password, age):
+        nick_not_search = True
         for user in self.users:
-            if nickname in self.users:
-                print(f'Пользователь {nickname} уже существует')
-        else:
-            self.users.append(User.__str__())
-            self.current_user = self.users
+            if user.nickname == nickname:
+                nick_not_search = False
+        if nick_not_search:
+            self.users.append(User(nickname, password, age))
             print(f'Пользователь {nickname} зарегистрирован. Выполнен вход.')
+        else:
+            print(f'Пользователь {nickname} уже существует')
 
     def log_out(self):
         self.current_user = None
 
-    def add(self, *args: Video):
-        for arg in args:
-            if arg.title in self.videos:
-                continue
+    def add(self, *videos):
+        for video in videos:
+            if video in self.videos:
+                print(f'Видео с названием: {video.title} существует')
             else:
-                self.videos.append(arg)
+                self.videos.append(video)
 
     def get_videos(self, search_term):
         list_on_request = []
-        for i in self.videos:
-            if search_term.lower() in 'i'.lower():
-                list_on_request.append(i)
+        for video in self.videos:
+            if search_term.lower() in video.title.lower():
+                list_on_request.append(video.title)
         return list_on_request
 
     def watch_video(self, video_title):
-        self.register()
-        if self.current_user:
-            if video_title in self.videos:
-                if video_title.adult_mode and User(age) >= 18 or self.video.adult_mode is False:
-                    print(Video.duration)
+        for video in self.videos:
+            if video_title == video.title:
+                if self.current_user != None:
+                    if video.adult_mode and self.current_user.age < 18:
+                        print('Вам нет 18 лет. Просмотр запрещен')
+                    else:
+                        current_time = 1
+                        while current_time <= video.duration:
+                            print(f'Проигрывание видео "{video.title}" ({current_time} секунда из {video.duration})')
+                            time.sleep(1)
+                            current_time += 1
+                        print('Видео закончилось')
                 else:
-                    print('Вам нет 18 лет, пожалуйста покиньте страницу.')
-            else:
-                print('Видео не найдено. Попробуйте повторить запрос.')
-        else:
-            print('Войдите в аккаунт, чтобы смотреть видео.')
-        print('Конец видео.')
+                    print('Войдите в аккаунт, чтобы смотреть видео')
 
 
 ur = UrTube()
